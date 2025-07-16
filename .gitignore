@@ -1,0 +1,58 @@
+# Bỏ qua các file biên dịch
+*.o
+*.obj
+*.lo
+*.la
+
+# Bỏ qua các file thực thi
+a.out
+a.exe
+main
+*.out
+*.exe
+
+# Bỏ qua file liên kết tĩnh và động
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+
+# Bỏ qua file cấu hình biên dịch (Makefile tự động hoặc tạm thời)
+*.d
+*.dep
+*.cmd
+
+# Bỏ qua file tạo bởi công cụ build (Makefile, CMake, Ninja, v.v.)
+CMakeFiles/
+CMakeCache.txt
+build/
+cmake-build-debug/
+cmake-build-release/
+*.ninja
+rules.ninja
+
+# File log và tạm thời
+*.log
+*.tmp
+*.swp
+
+# Bỏ qua file core dump
+core
+core.*
+
+# Tự động tạo bởi IDE hoặc trình biên tập
+.vscode/
+*.code-workspace
+.idea/
+*.iml
+*.sublime-workspace
+*.sublime-project
+
+# Khác
+tags
+*.DS_Store
+*.directory
+*.bak
+*.orig
+*.rej
