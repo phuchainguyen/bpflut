@@ -35,6 +35,7 @@ int cmd_init(const char *repository) {
     struct stat st = {0};
     if (stat(BPFLUT_DIR, &st) == -1) {
         if (create_directory(BPFLUT_DIR) != 0) {
+            log_error("Failed to create bpflut asset directory: %s", BPFLUT_DIR);
             return -1;
         }
     }
