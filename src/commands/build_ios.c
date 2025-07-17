@@ -93,28 +93,28 @@ int build_ios_handler(void) {
     system(cmd);
 
     snprintf(cmd, sizeof(cmd), 
-        "security cms -D -i %s | plutil -extract TeamIdentifier.0 raw -", 
+        "security cms -D -i %s | plutil -extract TeamIdentifier.0 raw - | xargs", 
         config.mobileprovision_file_path);
     log_info(cmd);
     char* team_id = run_command(cmd);
     log_info("Team ID: %s", team_id);
 
     snprintf(cmd, sizeof(cmd), 
-        "security find-certificate -a -p %s | openssl x509 -noout -subject | grep 'CN=' | sed -E 's/.*CN=([^/]+).*/\\1/'", 
+        "security find-certificate -a -p %s | openssl x509 -noout -subject | grep 'CN=' | sed -E 's/.*CN=([^/]+).*/\\1/' | xargs", 
         keychain_path);
     log_info(cmd);
     char* cert_name = run_command(cmd);
     log_info("Certificate Name: %s", cert_name);
 
     snprintf(cmd, sizeof(cmd), 
-        "security cms -D -i %s | plutil -extract Entitlements.application-identifier raw - | sed \"s/$TEAM_ID\\.//\"", 
+        "security cms -D -i %s | plutil -extract Entitlements.application-identifier raw - | sed \"s/$TEAM_ID\\.//\" | xargs", 
         config.mobileprovision_file_path);
     log_info(cmd);
     char* profile_bundle_key = run_command(cmd);
     log_info("Profile Bundle Key: %s", profile_bundle_key);
 
     snprintf(cmd, sizeof(cmd), 
-        "security cms -D -i %s | plutil -extract Name raw -", 
+        "security cms -D -i %s | plutil -extract Name raw - | xargs", 
         config.mobileprovision_file_path);
     log_info(cmd);
     char* profile_bundle_value = run_command(cmd);
