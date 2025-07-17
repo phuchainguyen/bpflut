@@ -95,7 +95,7 @@ int build_ios_handler(void) {
     char* team_id = run_command_static(cmd);
 
     snprintf(cmd, sizeof(cmd), 
-        "security find-certificate -a -p \"%s\" | openssl x509 -noout -subject | sed 's/.*CN=$$[^,]*$$.*/\\1/'", 
+        "security find-certificate -a -p \"%s\" | openssl x509 -noout -subject | sed 's/.*CN=$$[^,]*$$.*/\1/'", 
         keychain_path);
     char* cert_name = run_command_static(cmd);
 
