@@ -9,11 +9,11 @@
 
 static const char* ios_config_template = 
 "# iOS Build Configuration\n"
-"DISTRIBUTION_CER_PRIVATE_FILE_PATH=./certificates/cert.p12\n"
-"DISTRIBUTION_CER_FILE_PATH=your_password\n"
-"MOBILEPROVISION_FILE_PATH=./certificates/app.mobileprovision\n"
-"SIGNING_PASSWORD=random_singing_password\n"
-
+"DISTRIBUTION_CER_PRIVATE_FILE_PATH=certificates/distribution_private.key\n"
+"DISTRIBUTION_CER_FILE_PATH=certificates/distribution.cer\n"
+"MOBILEPROVISION_FILE_PATH=certificates/distribution.mobileprovision\n"
+"SIGNING_PASSWORD=1qazZAQ!\n"
+"\n"
 "API_PRIVATE_KEY_PATH=./keys/AuthKey_XXXXXXXXXX.p8\n"
 "API_KEY_ID=XXXXXXXXXX\n"
 "ISSUER_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\n"
