@@ -55,21 +55,25 @@ int build_ios_handler(void) {
     snprintf(cmd, sizeof(cmd), 
         "openssl x509 -inform der -in %s -out %s", 
         config.distribution_cer_private_path, pem_file_path);
+    log_info(cmd);
     system(cmd);
 
     snprintf(cmd, sizeof(cmd), 
         "openssl pkcs12 -export -out %s -inkey %s -in %s -passout pass:\"%s\"",
         p12_file_path, config.distribution_cer_private_path, pem_file_path, config.signing_password);
+    log_info(cmd);
     system(cmd);
 
     // Import certificate
     snprintf(cmd, sizeof(cmd), 
         "security import '%s' -P '%s' -A -t cert -f pkcs12 -k '%s'", 
         p12_file_path, config.signing_password, keychain_path);
+    log_info(cmd);
     system(cmd);
     
     snprintf(cmd, sizeof(cmd), 
         "security list-keychain -d user -s '%s'", keychain_path);
+    log_info(cmd);
     system(cmd);
     
     // Install provisioning profile
@@ -114,7 +118,7 @@ int build_ios_handler(void) {
     
     snprintf(cmd, sizeof(cmd), 
         "cd %s && flutter build ipa --release --export-options-plist=%s", 
-        BPFLUT_WORKSPACE_DIR, BPFLUT_IOS_EXPORTOPTIONS_PATH);
+        BPFLUT_WORKSPACE_DIR, BPFLUT_IOS_EXPORTOPTIONS);
     if (system(cmd) != 0) {
         log_error("Flutter iOS build failed");
         // Cleanup
