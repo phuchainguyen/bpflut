@@ -10,9 +10,6 @@ typedef struct {
     char api_private_key_path[256];
     char api_key_id[64];
     char issuer_id[128];
-    char flutter_version[32];
-    char project_name[128];
-    char bundle_id[128];
     
     // Android specific
     char keystore_path[256];

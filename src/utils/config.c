@@ -46,14 +46,6 @@ static void parse_config_line(const char* line, Config* config) {
             strcpy(config->api_key_id, value);
         } else if (strcmp(key, "ISSUER_ID") == 0) {
             strcpy(config->issuer_id, value);
-        } else if (strcmp(key, "FLUTTER_VERSION") == 0) {
-            strcpy(config->flutter_version, value);
-        } else if (strcmp(key, "PROJECT_NAME") == 0) {
-            strcpy(config->project_name, value);
-        } else if (strcmp(key, "BUNDLE_ID") == 0) {
-            strcpy(config->bundle_id, value);
-        } else if (strcmp(key, "TEAM_ID") == 0) {
-            strcpy(config->team_id, value);
         } else if (strcmp(key, "KEYSTORE_PATH") == 0) {
             strcpy(config->keystore_path, value);
         } else if (strcmp(key, "KEYSTORE_PASSWORD") == 0) {
@@ -81,7 +73,6 @@ int load_config(const char* config_file, Config* config) {
     
     // Initialize config with defaults
     memset(config, 0, sizeof(Config));
-    strcpy(config->flutter_version, "3.32.0");
     strcpy(config->track, "internal");
     
     char line[1024];
