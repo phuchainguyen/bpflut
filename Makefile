@@ -10,6 +10,7 @@ SOURCES = $(SRCDIR)/main.c \
           $(SRCDIR)/utils/logger.c \
           $(SRCDIR)/utils/config.c \
           $(SRCDIR)/utils/file_utils.c \
+          $(SRCDIR)/utils/path_utils.c \
           $(SRCDIR)/commands/init.c \
           $(SRCDIR)/commands/init_ios.c \
           $(SRCDIR)/commands/init_android.c \
