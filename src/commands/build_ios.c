@@ -35,15 +35,18 @@ int build_ios_handler(void) {
     snprintf(cmd, sizeof(cmd), 
         "security create-keychain -p '%s' '%s'", 
         config.signing_password, keychain_path);
+    log_info(cmd);
     system(cmd);
     
     snprintf(cmd, sizeof(cmd), 
         "security set-keychain-settings -lut 21600 '%s'", keychain_path);
+    log_info(cmd);
     system(cmd);
     
     snprintf(cmd, sizeof(cmd), 
         "security unlock-keychain -p '%s' '%s'", 
         config.signing_password, keychain_path);
+    log_info(cmd);
     system(cmd);
     
     // Export p12 from cer
