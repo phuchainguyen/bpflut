@@ -37,7 +37,6 @@ static void parse_config_line(const char* line, Config* config) {
     if (sscanf(line, "%127[^=]=%511[^\n]", key, value) == 2) {
         trim_whitespace(key);
         trim_whitespace(value);
-        log_info("Parsed config: %s = %s", key, value);
         if (strcmp(key, "DISTRIBUTION_CER_PRIVATE_FILE_PATH") == 0) {
             strcpy(config->distribution_cer_private_path, value);
         } else if (strcmp(key, "DISTRIBUTION_CER_FILE_PATH") == 0) {
@@ -112,6 +111,8 @@ int load_config(const char* config_file, Config* config) {
     make_abs_path(config->api_private_key_path, dir);
     make_abs_path(config->keystore_path, dir);
     make_abs_path(config->service_account_json, dir);
+    log_info(config->distribution_cer_private_path);
+    log_info(config->signing_password);
     log_info("Configuration loaded from: %s", config_file);
     return 0;
 }
