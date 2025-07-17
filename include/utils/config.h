@@ -13,7 +13,6 @@ typedef struct {
     char flutter_version[32];
     char project_name[128];
     char bundle_id[128];
-    char team_id[32];
     
     // Android specific
     char keystore_path[256];

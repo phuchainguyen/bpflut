@@ -1,9 +1,4 @@
 #include <libgen.h>
-#if defined(_WIN32) && !defined(PATH_MAX)
-#define PATH_MAX 260
-#else
-#include <limits.h>
-#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -101,18 +96,36 @@ int load_config(const char* config_file, Config* config) {
     
     fclose(file);
     // Chuyển các trường PATH sang tuyệt đối nếu là path tương đối
-    char config_dir[PATH_MAX];
-    strncpy(config_dir, config_file, PATH_MAX-1);
-    config_dir[PATH_MAX-1] = '\0';
+    char config_dir[256];
+    strncpy(config_dir, config_file, 256-1);
+    config_dir[256-1] = '\0';
     char* dir = dirname(config_dir);
-    make_abs_path(config->distribution_cer_private_path, dir);
-    make_abs_path(config->distribution_cer_path, dir);
-    make_abs_path(config->mobileprovision_file_path, dir);
-    make_abs_path(config->api_private_key_path, dir);
-    make_abs_path(config->keystore_path, dir);
-    make_abs_path(config->service_account_json, dir);
-    log_info(config->distribution_cer_private_path);
-    log_info(config->signing_password);
+    char abs_path[256];
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->distribution_cer_private_path);
+    strncpy(config->distribution_cer_private_path, abs_path, 256-1);
+    // make_abs_path(config->distribution_cer_private_path, dir);
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->distribution_cer_path);
+    strncpy(config->distribution_cer_path, abs_path, 256-1);
+    // make_abs_path(config->distribution_cer_path, dir);
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->mobileprovision_file_path);
+    strncpy(config->mobileprovision_file_path, abs_path, 256-1);
+    // make_abs_path(config->mobileprovision_file_path, dir);
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->api_private_key_path);
+    strncpy(config->api_private_key_path, abs_path, 256-1);
+    // make_abs_path(config->api_private_key_path, dir);
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->keystore_path);
+    strncpy(config->keystore_path, abs_path, 256-1);
+    // make_abs_path(config->keystore_path, dir);
+
+    snprintf(abs_path, sizeof(abs_path), "%s/%s", dir, config->service_account_json);
+    strncpy(config->service_account_json, abs_path, 256-1);
+    // make_abs_path(config->service_account_json, dir);
     log_info("Configuration loaded from: %s", config_file);
+
     return 0;
 }

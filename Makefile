@@ -9,6 +9,7 @@ BINDIR = bin
 SOURCES = $(SRCDIR)/main.c \
           $(SRCDIR)/utils/logger.c \
           $(SRCDIR)/utils/config.c \
+          $(SRCDIR)/utils/command_utils.c \
           $(SRCDIR)/utils/file_utils.c \
           $(SRCDIR)/utils/path_utils.c \
           $(SRCDIR)/commands/init.c \

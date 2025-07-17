@@ -1,5 +1,6 @@
 #include "commands/build_ios.h"
 #include "utils/logger.h"
+#include "utils/command_utils.h"
 #include "utils/config.h"
 #include "utils/bpflut_const.h"
 #include <stdio.h>
@@ -87,6 +88,26 @@ int build_ios_handler(void) {
     log_step("Creating ExportOptions.plist");
     snprintf(cmd, sizeof(cmd), "mkdir -p %s/Runner", BPFLUT_IOS_RUNNER_DIR);
     system(cmd);
+
+    snprintf(cmd, sizeof(cmd), 
+        "security cms -D -i \"%s\" | plutil -extract TeamIdentifier.0 raw -", 
+        config.mobileprovision_file_path);
+    char* team_id = run_command_static(cmd);
+
+    snprintf(cmd, sizeof(cmd), 
+        "security find-certificate -a -p \"%s\" | openssl x509 -noout -subject | sed 's/.*CN=$$[^,]*$$.*/\\1/'", 
+        keychain_path);
+    char* cert_name = run_command_static(cmd);
+
+    snprintf(cmd, sizeof(cmd), 
+        "security cms -D -i \"%s\" | plutil -extract Entitlements.application-identifier raw - | sed \"s/$TEAM_ID\\.//\"", 
+        config.mobileprovision_file_path);
+    char* profile_bundle_key = run_command_static(cmd);
+
+    snprintf(cmd, sizeof(cmd), 
+        "security cms -D -i \"%s\" | plutil -extract Name raw -", 
+        config.mobileprovision_file_path);
+    char* profile_bundle_value = run_command_static(cmd);
     
     FILE* export_options = fopen(BPFLUT_IOS_EXPORTOPTIONS_PATH, "w");
     if (export_options) {
@@ -101,14 +122,27 @@ int build_ios_handler(void) {
             "    <string>%s</string>\n"
             "    <key>signingStyle</key>\n"
             "    <string>manual</string>\n"
+            "    <key>signingCertificate</key>\n"
+            "    <string>%s</string>\n"
+            "    <key>provisioningProfiles</key>\n"
+            "    <dict>\n"
+            "        <key>%s</key>\n"
+            "        <string>%s</string>\n"
+            "    </dict>\n"
             "    <key>uploadBitcode</key>\n"
             "    <false/>\n"
             "    <key>uploadSymbols</key>\n"
             "    <true/>\n"
+            "    <key>compileBitcode</key>\n"
+            "    <false/>\n"
+            "    <key>stripSwiftSymbols</key>\n"
+            "    <true/>\n"
+            "    <key>thinning</key>\n"
+            "    <string>&lt;none&gt;</string>\n"
             "    <key>destination</key>\n"
             "    <string>upload</string>\n"
             "</dict>\n"
-            "</plist>\n", config.team_id);
+            "</plist>\n", team_id, cert_name, profile_bundle_key, profile_bundle_value);
         fclose(export_options);
     }
     
@@ -119,6 +153,7 @@ int build_ios_handler(void) {
     snprintf(cmd, sizeof(cmd), 
         "cd %s && flutter build ipa --release --export-options-plist=%s", 
         BPFLUT_WORKSPACE_DIR, BPFLUT_IOS_EXPORTOPTIONS);
+    log_info(cmd);
     if (system(cmd) != 0) {
         log_error("Flutter iOS build failed");
         // Cleanup
