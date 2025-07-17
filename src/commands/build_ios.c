@@ -92,25 +92,25 @@ int build_ios_handler(void) {
     snprintf(cmd, sizeof(cmd), 
         "security cms -D -i \"%s\" | plutil -extract TeamIdentifier.0 raw -", 
         config.mobileprovision_file_path);
-    char* team_id = run_command_static(cmd);
+    char* team_id = run_command(cmd);
     log_info("Team ID: %s", team_id);
 
     snprintf(cmd, sizeof(cmd), 
         "security find-certificate -a -p \"%s\" | openssl x509 -noout -subject | sed 's/.*CN=$$[^,]*$$.*/\1/'", 
         keychain_path);
-    char* cert_name = run_command_static(cmd);
+    char* cert_name = run_command(cmd);
     log_info("Certificate Name: %s", cert_name);
 
     snprintf(cmd, sizeof(cmd), 
         "security cms -D -i \"%s\" | plutil -extract Entitlements.application-identifier raw - | sed \"s/$TEAM_ID\\.//\"", 
         config.mobileprovision_file_path);
-    char* profile_bundle_key = run_command_static(cmd);
+    char* profile_bundle_key = run_command(cmd);
     log_info("Profile Bundle Key: %s", profile_bundle_key);
 
     snprintf(cmd, sizeof(cmd), 
         "security cms -D -i \"%s\" | plutil -extract Name raw -", 
         config.mobileprovision_file_path);
-    char* profile_bundle_value = run_command_static(cmd);
+    char* profile_bundle_value = run_command(cmd);
     log_info("Profile Bundle Value: %s", profile_bundle_value);
     
     FILE* export_options = fopen(BPFLUT_IOS_EXPORTOPTIONS_PATH, "w");
