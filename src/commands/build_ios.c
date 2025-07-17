@@ -54,7 +54,7 @@ int build_ios_handler(void) {
 
     snprintf(cmd, sizeof(cmd), 
         "openssl x509 -inform der -in %s -out %s", 
-        config.distribution_cer_private_path, config.distribution_cer_path, pem_file_path);
+        config.distribution_cer_private_path, pem_file_path);
     system(cmd);
 
     snprintf(cmd, sizeof(cmd), 
