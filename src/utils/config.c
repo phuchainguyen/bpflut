@@ -37,6 +37,7 @@ static void parse_config_line(const char* line, Config* config) {
     if (sscanf(line, "%127[^=]=%511[^\n]", key, value) == 2) {
         trim_whitespace(key);
         trim_whitespace(value);
+        log_info("Parsed config: %s = %s", key, value);
         if (strcmp(key, "DISTRIBUTION_CER_PRIVATE_FILE_PATH") == 0) {
             strcpy(config->distribution_cer_private_path, value);
         } else if (strcmp(key, "DISTRIBUTION_CER_FILE_PATH") == 0) {
